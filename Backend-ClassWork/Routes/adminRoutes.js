@@ -55,7 +55,7 @@ route.post('/login',async(req, res) => {
 
         // res.status(200).json({message : "User present"})
         const isvalid = await bcrypt.compare(Password,input.newP)
-        console.log(isvalid);
+        // console.log(isvalid);
         if(isvalid){
             const token =  jwt.sign({username : Username, UserRole : input.Role},secretKey,{expiresIn : '1h'})
             console.log(token);

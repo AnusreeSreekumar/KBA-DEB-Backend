@@ -1,36 +1,43 @@
 import { Router } from 'express';
 
 const userroute = Router();
-
 const usercert = new Map();
 
-userroute.post('/issuecertificate', (req, res) => {
+userroute.post('/frontpage', (req, resp) => {
 
-    try {
+    try{
 
-    const data = req.body;
+        const {
+            CertificateId
+        } = req.body;
 
-        const { CertificateId,
-            Course,
-            CertificateName,
-            Grade,
-            IssueDate } = data;
+        if(usercert.has(CertificateId)){
 
-        console.log(CertificateId)
-
-        if (usercert.has(CertificateId)) {
-            console.log("Already Issued")
-            res.status(200).json({ message: "Already Issued" })
+            resp.status(200).json({meesage : "Certificate already issued"});
+            console.log("Certificate already issued");
         }
-        else {
-            usercert.set(CertificateId, { Course, CertificateName, Grade, IssueDate });
-            console.log(usercert);
-            res.status(201).json({ message: "New Certificate" })
+        else{
+
+            resp.status(103).json({message : "New Certificate ID"});
+            console.log("New Certificate requested");
         }
     }
-    catch (error){
+    catch(error){
         res.status(500).json();
     }
+})
+
+userroute.post('/viewcertifictae', (req,res) => {
+
+    const {
+            UserName,
+            CourseName,
+            Academy,
+            IssueDate
+    } = req.body;
+
+    const mapdata = usercert.get(CertificateId);
+    
 })
 
 export { userroute };

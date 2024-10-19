@@ -5,14 +5,16 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node certiapp.js",
+    "start": "node Assignment/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^4.21.1",
     "json": "^11.0.0",
+    "jsonwebtoken": "^9.0.2",
     "router": "^2.0.0"
   }
 }
