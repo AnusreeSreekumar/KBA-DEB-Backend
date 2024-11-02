@@ -46,7 +46,6 @@ route.post('/signup', async (req, res) => {
     // try {
 
     const data = req.body;
-    console.log("Input:", data);
 
     const { FirstName,
         LastName,
@@ -55,14 +54,12 @@ route.post('/signup', async (req, res) => {
         Role } = data;
 
     const newP = await bcrypt.hash(Password, 10);
-    // console.log("hashed Password: ", newP);
-
+        
     const existingUser = await User.findOne({ dbuserName: Username });
-    // console.log(existingUser);
 
     if (existingUser) {
         console.log(`Username ${Username} is already present`);
-        res.status(403).json({ message: "User exists" });
+        res.status(404).json({ message: "User exists" });
     }
     else {
 
