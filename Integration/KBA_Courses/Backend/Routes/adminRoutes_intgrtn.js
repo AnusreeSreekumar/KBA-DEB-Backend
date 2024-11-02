@@ -470,7 +470,7 @@ route.get('/viewUser', authenticate, (req, res) => {
     catch {
         res.status(404).json({ message: 'user not authorized' });
     }
-})
+});
 
 route.get('/viewCourse', async (req, res) => {
     try {
@@ -488,7 +488,7 @@ route.get('/viewCourse', async (req, res) => {
     catch {
         res.status(404).json({ message: "Internal error" })
     }
-})
+});
 
 route.get('/logout', (req, res) => {
 
