@@ -1,7 +1,7 @@
 import { Router } from "express";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'; //this module is used for generating tokens
-import { authenticate } from "../../Middleware/auth.js";
+import { authenticate } from "../Middleware/auth.js";
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -46,81 +46,88 @@ route.post('/signup', async (req, res) => {
     }
 })
 
-// route.post('/login', async (req, res) => {
+route.post('/login', async (req, res) => {
 
-//     const { Username, Password } = req.body;
+    const { Username, Password } = req.body;
 
-//     //  console.log(Username);
+    //  console.log(Username);
 
-//     const input = user.get(Username);
-//     // console.log(input);
+    const input = user.get(Username);
+    // console.log(input);
 
-//     if (user.has(Username)) {
+    if (user.has(Username)) {
 
-//         // res.status(200).json({message : "User present"})
-//         const isvalid = await bcrypt.compare(Password, input.newP)
-//         // console.log(isvalid);
-//         if (isvalid) {
-//             const token = jwt.sign({ userName: Username, userRole: input.Role }, secretKey, { expiresIn: '1h' })
-//             console.log(token);
-//             res.cookie('authtoken', token, {
-//                 httpOnly: true
-//             });
-//             res.status(200).json({ message: "Success" })
+        // res.status(200).json({message : "User present"})
+        const isvalid = await bcrypt.compare(Password, input.newP)
+        // console.log(isvalid);
+        if (isvalid) {
+            const token = jwt.sign({ userName: Username, userRole: input.Role }, secretKey, { expiresIn: '1h' })
+            console.log(token);
+            res.cookie('authtoken', token, {
+                httpOnly: true
+            });
+            res.status(200).json({ message: "Success" })
+            console.log("Login Successfull");
+            // res.status(200).json({message : "User credentials are valid"})
+        }
+        else {
+            res.status(103).json({ message: "Please check your credentials" })
+        }
+    }
+    else {
 
-//             // res.status(200).json({message : "User credentials are valid"})
-//         }
-//         else {
-//             res.status(103).json({ message: "Please check your credentials" })
-//         }
-//     }
-//     else {
+        res.status(103).json({ message: "Please register" });
+        console.log("User not present. Please register");
+    }
 
-//         res.status(103).json({ message: "Please register" });
-//         console.log("User not present. Please register");
-//     }
+})
 
-// })
+route.post('/addCourse', authenticate, (req, res) => {
 
-// route.post('/addCourse', authenticate, (req, res) => {
+    const loginName = req.UserName;
+    const loginRole = req.UserRole;
+    // const addcourses = new Map();
 
-//     const loginName = req.UserName;
-//     const loginRole = req.UserRole;
-//     // const addcourses = new Map();
-
-//     console.log(loginRole);
+    console.log(loginRole);
 
 
-//     const {
-//         CourseName,
-//         CourseId,
-//         CourseType,
-//         Description,
-//         Price
-//     } = req.body;
+    const {
+        CourseName,
+        CourseId,
+        CourseType,
+        Description,
+        Price
+    } = req.body;
 
-//     try {
+    try {
 
-//         // const CourseName = CourseName.trim().toLowerCase()
+        // const CourseName = CourseName.trim().toLowerCase()
 
-//         if (loginRole == 'admin') {
+        if (loginRole == 'admin') {
+            if (addcourses.has(CourseId)) {
+                
+                res.status(404).json({ message: "Existing Course" });
+                console.log('Course already Present');
 
-//             addcourses.set(CourseId, { CourseName, CourseType, Description, Price })
-//             res.status(201).json({ message: "Course added" });
-//             console.log(addcourses);
-//             console.log("Course added successfully");
+            }
+            else {
 
-//         }
-//         else {
-//             res.status(401).json({ message: "User role should be Admin" });
+                addcourses.set(CourseId, { CourseName, CourseType, Description, Price })
+                res.status(201).json({ message: "Course added" });
+                console.log(addcourses);
+                console.log("Course added successfully");
+            }
+        }
+        else {
+            res.status(401).json({ message: "User role should be Admin" });
 
-//         }
-//     }
-//     catch (error) {
+        }
+    }
+    catch (error) {
 
-//         res.status(500).json({ message: "No response from Client" })
-//     }
-// })
+        res.status(500).json({ message: "No response from Client" })
+    }
+})
 
 //getCourse using Post method
 
@@ -454,5 +461,41 @@ route.delete('/deleteCourse/:id', authenticate, (req, res) => {
         res.status(500).json({ message: "Client Server missing" });
     }
 });
+
+route.get('/viewUser', authenticate, (req, res) => {
+    try {
+        const user = req.UserRole;
+        res.json({ user });
+    }
+    catch {
+        res.status(404).json({ message: 'user not authorized' });
+    }
+})
+
+route.get('/viewCourse', async (req, res) => {
+    try {
+        console.log(addcourses.size);
+
+        if (addcourses.size != 0) {
+
+
+            res.send(Array.from(addcourses.entries()))
+        }
+        else {
+            res.status(404).json({ message: 'Not Found' });
+        }
+    }
+    catch {
+        res.status(404).json({ message: "Internal error" })
+    }
+})
+
+route.get('/logout', (req, res) => {
+
+    res.clearCookie('authtoken');
+    res.status(200).json({ message: 'Logged Out' });
+    console.log('Logout successfully');
+})
+
 
 export { route };

@@ -4,9 +4,9 @@ import { adminRoutes } from './Router/signuproute.js';
 
 const certiapp = express();
 certiapp.use(json());
-const port = 8000;
+const port = 5000;
 
-certiapp.use('/',userroute, adminRoutes);
+certiapp.use('/', adminRoutes);
 
 certiapp.listen(port, () => {
 

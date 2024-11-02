@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+
+        .labelstyle{
+
+            margin-right: 10px;
+            margin-top: 12px;
+        }
+    </style>
+
+</head>
+
+<body class="p-0 m-0 bg-amber-50">
+    <div class="flex justify-between p-4 bg-white shadow-md shadow-stone-600">
+        <div class="w-9 h-11"><img src="/CSS/Activity/KBA Courses/Images/kbalogo.png"></div>
+        <ul class="flex flex-row">
+            <li class="mr-2"><a href="home.html" class="text-fuchsia-800 hover:font-bold hover:text-lg">Home</a>
+            </li>
+            <li class="mr-2"><a href="courses.html" class="text-fuchsia-800 hover:font-bold hover:text-lg">Courses</a>
+            </li>
+            <li class="mr-2"><a href="contactus.html" class="text-fuchsia-800 hover:font-bold hover:text-lg">Contact
+                    Us</a>
+            </li>
+            <li class="mr-2"><a href="addcourses.html" class="text-fuchsia-800 hover:font-bold hover:text-lg">Add
+                    Course</a></li>
+            <li class="mr-2"><a href="home.html" class="text-fuchsia-800 hover:font-bold hover:text-lg">Logout</a>
+            </li>
+        </ul>
+    </div>
+
+    <p class="mb-8">All Courses</p>
+    <div class="mt-16 border bg-white w-96 p-8 rounded-md shadow-lg ml-4">
+        <img src="Images/Blkchain1.jpeg" class="w-26">
+        <a href="learnmore.html" class="block text-purple-900 my-10">More</a>
+        <button type="submit"
+            class="w-18 bg-purple-700 text-white font-bold py-2 px-4 rounded hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
+            onclick="window.location.href='learnmore.html'">
+            Learn More
+        </button>
+
+        <div id="exp" class="mt-8 ml-4 text-center"></div>
+        </div>
+    </div>
+
+    <script>
+        {
+            let text1 = document.createElement("p")
+            text1.textContent = "Share your thoughts on the course"
+            document.getElementById("exp").appendChild(text1)
+
+            let element = document.createElement("input");
+            element.type = "radio";
+            element.name = "feedback";
+            // element.innerHTML = "Good";
+            // element.id = "feedback";
+            document.getElementById("exp").appendChild(element);
+
+            let radio1 = document.createElement("label")
+            radio1.textContent = "Good"
+            radio1.className = "labelstyle"
+            document.getElementById("exp").appendChild(radio1)
+
+            let element1 = document.createElement("input");
+            element1.type = "radio";
+            element1.name = "feedback"
+            // element1.id = "feedback";
+            document.getElementById("exp").appendChild(element1);
+
+            let radio2 = document.createElement("label")
+            radio2.textContent = "Bad"
+            radio2.className = "labelstyle"
+            document.getElementById("exp").appendChild(radio2)
+
+            let element2 = document.createElement("input");
+            element2.type = "radio";
+            element2.name = "feedback"
+            // element2.id = "feedback";
+            document.getElementById("exp").appendChild(element2);
+
+            let radio3 = document.createElement("label")
+            radio3.textContent = "Average"
+            radio3.className = "labelstyle"
+            document.getElementById("exp").appendChild(radio3);
+        }
+    </script>
+</body>
+
+</html>

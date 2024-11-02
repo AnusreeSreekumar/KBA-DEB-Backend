@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Course details</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+
+        window.onload = loadCourseDetails;
+        function loadCourseDetails() {
+            try{
+                const courseId = localStorage.getItem('courseid');
+                // console.log(courseId);
+                
+                if (courseId) {
+                     document.getElementById('crsId').textContent = `Course Name: ${courseId}`;
+                     document.getElementById('descrp').textContent = ${Description};
+                }
+                else{
+                    document.getElementById('crsId').textContent = 'No course ID found.';
+                }
+                
+            }
+            catch(error){
+                alert(error)
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-amber-50 h-screen">
+    <div class="flex justify-between shadow-2xl p-4">
+        <div class="w-9"><img src="./Images/kbalogo.png"></div>
+        <nav>
+            <ul class="flex flex-row">
+                <li class="pr-3"><a href="home.html" class="text-fuchsia-800 hover:font-bold hover:text-lg">Home</a>
+                </li>
+                <li class="pr-3"><a href="courses.html"
+                        class="text-fuchsia-800 hover:font-bold hover:text-lg">Courses</a>
+                </li>
+                <li class="pr-3"><a href="contactus.html" class="text-fuchsia-800 hover:font-bold hover:text-lg">Contact
+                        Us</a></li>
+                <li class="pr-3"><a href="addcourses.html" id="admin"
+                        class="text-fuchsia-800 hover:font-bold hover:text-lg" style="display: none;">Add Course</a>
+                </li>
+                <li class="pr-3"><a href="loginpage.html"
+                        class="text-fuchsia-800 hover:font-bold hover:text-lg">Login/Sign
+                        Up</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="mt-8 underline font-light text-purple-900">
+        <a href="/KBA_Courses/Front-end/home.html">Back to course</a>
+    </div>
+
+    <div class="bg-white w-96 rounded-md shadow-lg p-8 mt-12 ml-10">
+        <h1 class="text-center font-bold text-fuchsia-800 text-2xl">Course details</h1>
+        <p id="crsId"></p>
+        <p id="descrp">Description</p>
+        <p id="price"></p>
+        <button class="w-24 h-6 bg-slate-200 border border-solid border-slate-600 rounded text-sm">Add to Cart</button>
+        <div>
+            <p>Description</p>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
