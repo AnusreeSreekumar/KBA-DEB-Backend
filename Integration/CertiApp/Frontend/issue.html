@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certied App</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+
+        async function issueCert(event) {
+            try {
+
+                // event.preventDefault();
+                const certid = document.getElementById('certid').value;
+                const crsname =  document.getElementById('crsname').value;
+                const candtname = document.getElementById('candtname').value;
+                const grade = document.getElementById('grade').value;
+                const date = document.getElementById('date').value;
+
+                console.log("Course Name:", crsname);
+                console.log("Cert ID:", certid);
+                console.log("Candidate Name:", candtname);
+                console.log("Grade:", grade);
+                console.log("Date:", date);
+
+                // console.log({
+                //     CertId: certid,
+                //     Course: crsname,
+                //     CandidateName: candtname,
+                //     Grade: grade,
+                //     IssueDate: date
+                // });
+
+                const response = await fetch('http://127.0.0.1:5000/issuecertificate', {
+
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        CertId: certid,
+                        Course: crsname,
+                        CandidateName: candtname,
+                        Grade: grade,
+                        IssueDate: date
+                    })
+                });
+                console.log(response);
+                if (response.status == 201) {
+                    alert('Certificate added Successfully')
+                }
+                else {
+                    alert('Not sign in')
+                }
+            }
+            catch (error) {
+                console.log(error);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="w-full h-10 bg-slate-200 text-right pr-6 pt-2 shadow-xl">
+        <a href="index.html" class="mr-4 focus:border focus:bg-sky-400 focus:p-1 focus:rounded-md">Home</a>
+        <a href="issue.html" class="focus:border focus:bg-sky-400 focus:p-1 focus:rounded-md">Issue Certificate</a>
+    </div>
+
+
+    <div class="bg-slate-200 w-2/3 mt-20 ml-48 h-screen mb-6 p-20 rounded-md shadow-xl">
+        <div class="pl-20">
+            <h2 class=" pt-8 indent-48 font-bold text-xl">Certificated App</h2>
+            <h4 class="pt-8 indent-44">Issue New Certificate</h4>
+            <p class="pt-8">Select Course:
+                <select name="course" id="crsname" required class="pl-2 h-8 w-96 ml-12 bg-white text-slate-400">
+                    <option value="Certified Blockchain Associate">Certified Blockchain Associate</option>
+                    <option value="Certified Blockchain Developer">Certified Blockchain Developer</option>
+                    <option value="Certified Full Stack Developer">Certified Full Stack Developer</option>
+                    <option value="Certified Blockchain UI/UX Designer">Certified Blockchain UI/UX Designer</option>
+                </select>
+            </p>
+
+            <p class="pt-6">Certificate ID:&nbsp;
+                <input type="text" id="certid" placeholder="Certificate Id" required class="pl-2 h-8 w-96 ml-12 bg-white">
+            </p>
+
+            <p class="pt-6">Candidate Name:&nbsp;
+                <input type="text" id="candtname" placeholder="Candidate Name" required class="pl-2 h-8 w-96 ml-6 bg-white">
+            </p>
+            <p class="pt-6">Select Grade:
+                <select name="Grade" id="grade" required class="pl-2 h-8 ml-14 bg-white text-slate-400">
+                    <option value="OS">OS</option>
+                    <option value="A+">A+</option>
+                    <option value="A">A</option>
+                    <option value="B+">B+</option>
+                    <option value="B">B</option>
+                    <option value="C+">C+</option>
+                    <option value="C">C</option>
+                    <option value="D+">D+</option>
+                    <option value="D">D</option>
+                </select>
+            </p>
+
+            <p class="pt-6">
+                Issue date:&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="date" id="date" class="pl-2 h-8 ml-16 text-slate-400">
+            </p> -
+            <p class="pt-10">
+                <a href="#">
+                    <input type="button" value="Issue Certificate" onclick="issueCert(event)"
+                        class="bg-blue-300 h-8 w-32 rounded-md text-white hover:bg-blue-500 ml-52">
+                </a>
+            </p>
+        </div>
+    </div>
+
+</body>

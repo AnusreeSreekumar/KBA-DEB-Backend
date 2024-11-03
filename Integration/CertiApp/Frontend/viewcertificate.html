@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certied App</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+
+        window.onload = async () => {
+            try {
+
+                const content1 = document.getElementById('content1');
+                const content2 = document.getElementById('content2');
+                const content3 = document.getElementById('content3');
+                const data1 = JSON.parse(localStorage.getItem('certificates'));
+                console.log(data1);
+
+                if (data1) {
+
+                    const certdetails = data1.certificate;
+
+                    content1.textContent = `This is to certify that ${certdetails.dbCandtName}`;
+                    content2.textContent = `has successfully completed ${certdetails.dbCourse}`;
+                    content3.textContent = `with ${certdetails.dbGrade} on ${certdetails.dbDate}`;
+                }
+            }
+            catch (error) {
+                console.log(error);
+
+            }
+        }
+
+        function capitalizeFirstLetter(string) {
+            if (!string) return ''; // Return an empty string if the input is empty
+            return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+        }
+    </script>
+</head>
+
+<body>
+    <div class="w-full h-10 bg-slate-200 text-right pr-6 pt-2 shadow-xl">
+        <a href="index.html" class="mr-4 focus:border focus:bg-sky-400 focus:p-1 focus:rounded-md">Go Back</a>
+    </div>
+    <div class="bg-slate-200 w-2/3 mt-20 ml-48 h-screen mb-6 p-20 rounded-md shadow-xl">
+        <div class="">
+            <h2 class="text-center font-bold text-xl">Kerala Blockchain Academy</h2>
+            <img src="Screenshot from 2024-08-27 16-05-13.png" class="ml-64 pt-20"><br>
+            <p id="content1" class="text-center p-2"></p>
+            <p id="content2" class="text-center p-2"></p>
+            <p id="content3" class="text-center p-2"></p>
+
+
+            <!-- This is to certify that <br><br> has successfully completed <b>Blockchain Foundation </b>with <b>S</b> on <b>2024-08-27</b></p> -->
+        </div>
+    </div>
+
+</body>
+
+</html>

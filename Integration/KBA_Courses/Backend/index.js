@@ -1,6 +1,6 @@
 import express, { json } from 'express';
 
-import { route } from './Routes/adminRoutes.js';
+import { route } from './Routes/adminRoutes_intgrtn.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
 

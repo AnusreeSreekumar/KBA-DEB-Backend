@@ -1,5 +1,4 @@
 import express,{json} from 'express';
-import { userroute } from './Router/userroute.js';
 import { adminRoutes } from './Router/signuproute.js';
 
 const certiapp = express();

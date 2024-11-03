@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certie Dap</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+
+        window.onload = async () => {
+            try {
+
+                const response = await fetch('http://127.0.0.1:5000/viewUser', {
+
+                    method: 'GET',
+                    credentials: 'include',
+                });
+
+                const data = await response.json();
+                console.log(data);
+                
+                if (data.user == 'Admin') {
+
+                    document.getElementById('issue').style.display = 'block';
+                }
+            }
+            catch (error) {
+                console.log(error);
+
+            }
+        }
+
+        async function viewCert(event) {
+            try {
+
+                event.preventDefault();
+                const certid = document.getElementById('certid').value;
+                const response = await fetch(`http://127.0.0.1:5000/viewcertificate/${certid}`, {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+                // console.log(response.status);
+
+                const data1 = await response.json();
+                console.log("Data1:",data1);
+                if (data1) {
+                    localStorage.setItem('certificates', JSON.stringify(data1));
+                    console.log("Data successfully stored in localStorage:", JSON.parse(localStorage.getItem('certificates')));
+                }
+                if (response.status != 404) {
+
+                    window.location.href = './viewcertificate.html';
+                }
+            }
+            catch (error) {
+                console.log(error);
+            }
+        }
+
+    </script>
+</head>
+
+<body>
+    <div class="w-full h-10 bg-slate-200 text-right pr-4 sm:pr-6 pt-2 shadow-xl">
+        <div class="flex flex-row justify-end space-x-4">
+            <a href="index.html" class="focus:border focus:bg-sky-400 focus:p-1 focus:rounded-md">Home</a>
+            <a href="issue.html" id="issue" class="focus:border focus:bg-sky-400 focus:p-1 focus:rounded-md"
+                style="display: none;">Issue Certificate</a>
+            <a href="signup.html" class="focus:border focus:bg-sky-400 focus:p-1 focus:rounded-md">Logout</a>
+        </div>
+       
+    </div>
+    <div class="flex justify-center mt-8 px-4 sm:px-0">
+        <div class="bg-slate-200 mt-10 sm:mt-20 w-full max-w-lg h-auto sm:h-96 shadow-xl rounded-md p-4 sm:p-8">
+            <h2 class="font-bold text-center mt-4 sm:mt-8 text-lg sm:text-xl">Certificate Dap</h2>
+            <img src="Screenshot from 2024-08-27 16-05-13.png" class="mx-auto pt-4 sm:pt-6 max-w-xs sm:max-w-sm">
+            <div class="flex flex-row items-center mt-4 space-x-4">
+                <input id="certid" type="text" placeholder="Enter Certificate ID to view"
+                    class="w-full max-w-xs sm:max-w-sm p-2 border border-gray-300 rounded-md text-center mb-4">
+                <a href="certificate.html" onclick="viewCert(event)">
+                    <input type="button" value="Search"
+                        class="bg-blue-300 w-24 py-1 rounded-md text-white hover:bg-blue-500 mb-4">
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
