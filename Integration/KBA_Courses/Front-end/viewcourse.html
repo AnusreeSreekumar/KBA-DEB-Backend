@@ -10,29 +10,52 @@
 
     <script>
 
-        window.onload = loadCourseDetails;
-        function loadCourseDetails() {
-            try{
-                const courseId = localStorage.getItem('courseid');
-                // console.log(courseId);
-                
-                if (courseId) {
-                     document.getElementById('crsId').textContent = `Course Name: ${courseId}`;
-                     document.getElementById('descrp').textContent = ${Description};
+        window.onload = async () => {
+            try {
+                const response = await fetch("http://127.0.0.1:8000/viewUser", {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-                else{
+                const data = await response.json();
+                console.log("Data:", data);
+
+                if (data.user == 'admin') {
+
+                    document.getElementById("admin").style.display = 'block';
+
+                }
+                const courseId = JSON.parse(localStorage.getItem('courseid'));
+                console.log("local data: ", courseId);
+
+                if (courseId) {
+                    document.getElementById('crsname').textContent = `${courseId.CourseName}`;
+                    document.getElementById('descrp').innerHTML = `${courseId.Description}`;
+                    document.getElementById('price').textContent = `Rs.${courseId.Price}`;
+                }
+                else {
                     document.getElementById('crsId').textContent = 'No course ID found.';
                 }
-                
             }
-            catch(error){
+            catch (error) {
                 alert(error)
             }
         }
+
+        async function update(params) {
+            
+            const crsname = document.getElementById('crsname').value;
+            console.log(crsname);
+            
+        }
+
     </script>
 </head>
 
-<body class="bg-amber-50 h-screen">
+<body class="bg-amber-50 h-screen w-full">
     <div class="flex justify-between shadow-2xl p-4">
         <div class="w-9"><img src="./Images/kbalogo.png"></div>
         <nav>
@@ -55,20 +78,59 @@
     </div>
 
     <div class="mt-8 underline font-light text-purple-900">
-        <a href="/KBA_Courses/Front-end/home.html">Back to course</a>
+        <a href="/Integration/KBA_Courses/Front-end/courses.html">Back to course</a>
     </div>
 
-    <div class="bg-white w-96 rounded-md shadow-lg p-8 mt-12 ml-10">
-        <h1 class="text-center font-bold text-fuchsia-800 text-2xl">Course details</h1>
-        <p id="crsId"></p>
-        <p id="descrp">Description</p>
-        <p id="price"></p>
-        <button class="w-24 h-6 bg-slate-200 border border-solid border-slate-600 rounded text-sm">Add to Cart</button>
-        <div>
-            <p>Description</p>
+    <div class="flex flex-col justify-center items-center">
+        <div class="bg-white max-w-3xl h-max rounded-md shadow-lg p-8 mt-8">
+            <h1 class="text-center font-bold text-fuchsia-800 text-3xl">Course details</h1>
+            <div class="flex flex-row justify-between mt-14">
+                <p id="crsname" class="font-bold text-2xl text-purple-600"></p>
+                <p id="price" class="font-bold text-4xl text-red-400"></p>
+                <button class="w-28 h-10 bg-purple-400 rounded text-md text-white hover:bg-purple-600">Add to
+                    Cart</button>
+            </div>
+            <div class="mt-6">
+                <p class="font-bold text-2xl text-purple-600">Description</p>
+                <p id="descrp"></p>
+                <p>Certified Ethereum Developer is designed for learning about Ethereum Public Blockchain and
+                    Decentralized Applications (Dapps). The course is mainly intended for a developer who wants to
+                    develop decentralized applications for the Ethereum Network. The course is structured in a zero to
+                    finish project development manner. The candidate gets to develop a decentralized application while
+                    learning about the various concepts of the application development on the Ethereum network.</p>
+            </div>
+
+            <div class="mt-10">
+                <h2 class="text-2xl font-semibold text-purple-800">
+                    Prerequisites
+                </h2>
+                <ul class="list-disc list-inside">
+                    <li>Basic understanding of blockchain technology</li>
+                    <li>Familiarity with programming languages</li>
+                    <li>Internet access</li>
+                </ul>
+            </div>
+
+            <div class="mt-10">
+                <h2 class="text-2xl font-semibold text-purple-800">
+                    Features
+                </h2>
+                <ul class="list-disc list-inside">
+                    <li>40 hours of content</li>
+                    <li>Certificate of completion</li>
+                    <li>Access to community forums</li>
+                    <li>Downloadable resources</li>
+                    <li>24/7 support</li>
+                </ul>
+            </div>
         </div>
-
+        <div class="mt-4">
+            <button onclick="update()" class="w-28 h-10 bg-orange-500 rounded-full mr-20">Edit Course</button>
+            <button class="w-36 h-10 bg-orange-500 rounded-full ml-2">Remove Course</button>
+        </div>
     </div>
+
+
 
 </body>
 

@@ -6,62 +6,152 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Course</title>
 
-    <link rel="stylesheet" href="/CSS/KBA Courses/StyleCSS/addstyle.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+
+        window.onload = async () => {
+            // console.log("hi");
+            try {
+
+                const response = await fetch("http://127.0.0.1:8000/viewUser", {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+
+                const data = await response.json();
+
+                if (data.user == 'admin') {
+
+                    document.getElementById("admin").style.display = 'block';
+
+                }
+            }
+            catch (error) {
+                console.log(error);
+            }
+
+        }
+
+        async function updatecourses(event) {
+
+            try {
+
+                const courseId = JSON.parse(localStorage.getItem('courseid'));
+                console.log("local data: ", courseId);
+                // event.preventDefault();
+                // const Crsname = document.getElementById('CrsName').value;
+                // const Crsid = document.getElementById('CrsId').value;
+                // const Crstype = document.getElementById('CrsType').value;
+                // const Crsdesc = document.getElementById('CrsDesc').value;
+                // const Price = document.getElementById('CrsPrice').value;
+
+                // console.log(Crsname, Crsid, Crstype, Crsdesc, Price);
+                // const response = await fetch(`http://127.0.0.1:8000/updateCourse/${Crsid}`, {
+
+                //     method : "PATCH",
+                //     credentials : "include",    
+                //     headers : {
+                //          'Content-Type': 'application/json'
+                //     },
+                //     body: JSON.stringify({
+                //         newCourseName: Crsname,
+                //         newCourseType: Crstype,
+                //         newDescription: Crsdesc,
+                //         newPrice: Price
+
+                //     })
+                // });
+
+                console.log(response);
+                // if(response.ok){
+                //     alert('Course updated successfully')
+                // }
+                
+            }
+            catch(error){
+                console.log(error);
+            }
+        }
+    </script>
 </head>
 
-<body>
-    <div class="header">
-        <div><img src="/CSS/KBA Courses/Images/kbalogo.png" alt=""></div>
-        <ul class="nav1">   
-            <li><a href="home">Home</a></li>
-            <li><a href="courses">Courses</a></li>
-            <li><a href="contact">Contact Us</a></li>
-            <li><a href="add">Add Course</a></li>
-            <li><a href="logout">Logout</a></li>
-        </ul>
+<body class="p-0 m-0 bg-amber-50"></body>
+<div class="flex justify-between p-4 bg-white shadow-md shadow-stone-600">
+    <div class="w-9 h-11"><img src=/Images/kbalogo.png"></div>
+    <ul class="flex flex-row">
+        <li class="mr-2"><a href="home.html" class="text-fuchsia-800 hover:font-bold hover:text-lg">Home</a>
+        </li>
+        <li class="mr-2"><a href="courses.html" class="text-fuchsia-800 hover:font-bold hover:text-lg">Courses</a>
+        </li>
+        <li class="mr-2"><a href="contactus.html" class="text-fuchsia-800 hover:font-bold hover:text-lg">Contact
+                Us</a></li>
+        <li class="mr-2"><a href="addcourses.html" class="text-fuchsia-800 hover:font-bold hover:text-lg"
+                style="display: none;">Add
+                Course</a></li>
+        <li class="mr-2"><a href="home.html" class="text-fuchsia-800 hover:font-bold hover:text-lg">Logout</a>
+        </li>
+    </ul>
+</div>
+<div class="flex items-center justify-center h-[calc(100vh-64px)]">
+    <div class="w-96 shadow-2xl bg-white rounded-md p-8">
+        <h1 class="font-bold text-2xl text-centre text-fuchsia-800 mb-2 pl-20">Update Course</h1>
+        <form action="" onsubmit="updatecourses(event)">
+            <div>
+                <label for="name" class="block font-bold text-gray-700 mb-2">Course Name</label>
+                <input type="text" id="CrsName" placeholder="eg. Certified Blockchain Associate"
+                    class="mb-2 border border-gray-300 focus:border-purple-500 focus:outline-none w-full rounded-md"
+                    required>
+            </div>
+
+            <div>
+                <label for="id" class="block font-bold text-gray-700 mb-2">Course Id</label>
+                <input type="text" id="CrsId" placeholder="eg. 1"
+                    class="mb-2 border border-gray-300 focus:border-purple-500 focus:outline-none w-full rounded-md"
+                    required>
+            </div>
+
+            <div>
+                <label for="type" class="block font-bold text-gray-700 mb-2">Course Type</label>
+            </div>
+
+            <div>
+                <select id="CrsType" class="mb-2 w-full rounded-md border border-gray-300 p-1" required>
+                    <option value="self">Self-Paced</option>
+                    <option value="option2">Course 2</option>
+                    <option value="option3">Course 3</option>
+                    <option value="option4">Course 4</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="desc" class="block font-bold text-gray-700 mb-2">Desription</label>
+                <textarea name="desc" id="CrsDesc" placeholder="Small description on the course"
+                    class="mb-2 w-full border border-gray-300 focus:border-purple-500 focus:outline-none p-1 rounded-md"
+                    required></textarea>
+            </div>
+
+            <div>
+                <label for="price" class="block font-bold text-gray-700 mb-2">Price</label>
+            </div>
+            <div>
+                <select id="CrsPrice" class="mb-2 w-full rounded-md border border-gray-300 p-1" required>
+                    <option value="15000">15000</option>
+                    <option value="20000">20000</option>
+                    <option value="20000">20000</option>
+                </select>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit"
+                    class="w-full bg-purple-700 text-white font-bold py-2 px-4 rounded hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
+                    Submit
+                </button>
+            </div>
+
+        </form>
     </div>
-    <div class="addcontainer">
-        <h1>Update Course</h1>
-        <div class="sections">
-            <label for="name">Course Name</label>
-            <div><input type="text" placeholder="s122"></div>
-        </div>
-
-        <div class="sections">
-            <label for="type">Course Type</label>
-        </div>
-        <div>
-            <select class="choices">
-                <option value="self">Hybrid</option>
-                <option value="option2">Self-Paced</option>
-                <option value="option3">Course 3</option>
-                <option value="option4">Course 4</option>
-            </select>
-        </div>
-
-        <div class="sections">
-            <label for="desc">Desription</label>
-            <div><textarea name="desc" placeholder="Small description on the course"></textarea></div>
-        </div>
-
-        <div class="sections">
-            <label for="price">Price</label>
-        </div>
-        <div>
-            <select class="choices">
-                <option value="admin">Rs.5000</option>
-                <option value="option2">Amount 2</option>
-                <option value="option3">Amount 3</option>
-            </select>
-        </div>
-
-        <div>
-            <input type="submit" value="Update Course">
-        </div>
-
-    </div>
-
-    </div>
+</div>
 </body>
 
 </html>

@@ -39,28 +39,35 @@
             console.log(response.status);
 
             const data1 = await response.json();
-            // console.log(data1.length);
+            console.log("Quantity in Map:", data1.length);
 
             if (response.status != 404) {
-                console.log(data1, "data");
+                // console.log("Data in Map:", data1);
                 const container = document.getElementById("cards")
                 container.innerHTML = '';
                 data1.forEach(addcourses => {
                     console.log(addcourses);
 
                     const coursediv = document.createElement("div");
-                    coursediv.style.border = '2px solid red';
-                    coursediv.style.width = '250px'
+                    coursediv.style.border = '2px solid black';
+                    coursediv.style.width = '300px'
+                    coursediv.style.height = '300px'
+                    coursediv.style.padding = '16px'
+                    coursediv.style.margin = '10px'
 
                     const coursename = document.createElement("h1");
-                    coursename.id = 'id';
-                    coursename.value = addcourses[1]
-                    coursename.innerHTML = addcourses[1];
+                    coursename.id = 'name';
+                    coursename.value = addcourses[1].CourseName
+                    coursename.innerHTML = addcourses[1].CourseName;
                     
                     const image = document.createElement("img");
-                    image.src = "./download.png";
+                    image.src = "./Images/Blkchain1.jpeg";
+                    image.style.marginBottom = '10px'
+                    image.style.marginTop = '10px'
+
                     const description = document.createElement("p");
                     description.innerHTML = addcourses[1].Description;
+
                     const more = document.createElement("input");
                     more.onclick = function(){
                         handleMore(addcourses[1]);
@@ -68,8 +75,8 @@
                     more.type = 'submit';
                     more.value = 'View More'
                     more.style.border = '2px solid black';
-
-                    // console.log(addcourses[1]);
+                    more.style.marginTop = '10px'
+                    more.style.width = '100px'
                     
                     coursediv.appendChild(coursename);
                     coursediv.appendChild(image);
@@ -87,7 +94,9 @@
 
             console.log(storeval);
 
-            localStorage.setItem('courseid', storeval);
+            localStorage.setItem('courseid', JSON.stringify(storeval));
+            // console.log(JSON.parse(localStorage.getItem('courseid')));
+            
             window.location.href = './viewcourse.html'
 
         }
@@ -134,35 +143,6 @@
         <button class='w-80 h-10 rounded-full bg-purple-500 text-white font-medium  hover:bg-purple-600'
             onclick="viewCourse()">View all Courses</button>
     </div>
-
-    <!-- <h3 class="pb-8 ml-4 font-bold text-teal-700">TOPICS</h3>
-
-    <div class="grid grid-cols-3 gap-2 justify-items-center text-center">
-        <div class="shadow-2xl shadow-black w-96 place-content-center p-5">
-            <p>Certified Blockchain Associate</p>
-            <img src="Images/Blkchain1.jpeg" class="mt-12 ml-6">
-            <p class="mt-10 mb-4">A blockchain is a distributed system that exists across a network of nodes within a peer-to-peer framework.  </p>
-            <a href="learnmore.html" class="text-purple-900 btn hover:font-bold">Learn More</a>
-    
-        </div>
-
-        <div class="shadow-2xl shadow-black w-96 place-content-center p-5">
-            <p>Cyber Security</p>
-            <img src="Images/cybersecurity.jpeg" class="mt-12 ml-10">
-            <p class="mt-10 mb-4">Foundations of Computer Systems and Cyber Security</p>
-            <a href="learnmore.html" class="btn text-purple-900 hover:font-bold">Learn More</a>
-        </div>
-
-        <div class="shadow-2xl shadow-black w-96 place-content-center p-5">
-            <p>PCB Design</p>
-            <img src="Images/pcb.jpeg" class="mt-12 ml-8">
-            <p class="mt-10 mb-4">Basics of Electronics, Electronics components and specifications, Industry relevance of PCB fabrication</p>
-            <a href="learnmore.html" class="btn text-purple-900 hover:font-bold">Learn More</a>
-        </div>
-    </div> -->
-
-
-
 </body>
 
 </html>

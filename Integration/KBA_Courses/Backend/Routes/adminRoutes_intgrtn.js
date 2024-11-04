@@ -50,10 +50,7 @@ route.post('/login', async (req, res) => {
 
     const { Username, Password } = req.body;
 
-    //  console.log(Username);
-
     const input = user.get(Username);
-    // console.log(input);
 
     if (user.has(Username)) {
 
@@ -392,6 +389,8 @@ route.put('/updateCourse/:id', authenticate, (req, res) => {
 route.patch('/updateCourse/:id', authenticate, (req, res) => {
 
     const loginRole = req.UserRole;
+    console.log(loginRole);
+    
 
     try {
 
@@ -399,13 +398,10 @@ route.patch('/updateCourse/:id', authenticate, (req, res) => {
 
             const data = req.body;
             const updateId = req.params.id;
-            // console.log("Inside first if ID: ",updateId);
-
 
             if (addcourses.has(updateId)) {
 
                 const mapitem = addcourses.get(updateId);
-                // console.log("Inside 2nd if Map: ",mapitem);
                 const {
                     newCourseName,
                     newCourseType,

@@ -20,9 +20,8 @@
                 const password = document.getElementById('password').value;
                 const role = document.getElementById('ctype').value;
 
-
-                console.log(fName, lName);
-
+                console.log(uname);
+                
                 const response = await fetch('http://127.0.0.1:8000/signup', {
                     method: "POST",
                     credentials: "include",
