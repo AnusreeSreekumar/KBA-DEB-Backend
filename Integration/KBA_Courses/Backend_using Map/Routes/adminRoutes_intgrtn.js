@@ -3,17 +3,18 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'; //this module is used for generating tokens
 import { authenticate } from "../Middleware/auth.js";
 import dotenv from 'dotenv';
+import mongoose from "mongoose";
 
 dotenv.config();
 const route = Router();
-const user = new Map();
 const secretKey = process.env.SecretKey;
-const addcourses = new Map();
+
+const 
 
 route.get('/', (req, res) => {
 
     res.send("Hello World")
-});
+})
 
 route.post('/signup', async (req, res) => {
 

@@ -43,42 +43,42 @@ route.get('/', (req, res) => {
 
 route.post('/signup', async (req, res) => {
 
-    // try {
+    try {
 
-    const data = req.body;
+        const data = req.body;
 
-    const { FirstName,
-        LastName,
-        Username,
-        Password,
-        Role } = data;
+        const { FirstName,
+            LastName,
+            Username,
+            Password,
+            Role } = data;
 
-    const newP = await bcrypt.hash(Password, 10);
-        
-    const existingUser = await User.findOne({ dbuserName: Username });
+        const newP = await bcrypt.hash(Password, 10);
 
-    if (existingUser) {
-        console.log(`Username ${Username} is already present`);
-        res.status(404).json({ message: "User exists" });
+        const existingUser = await User.findOne({ dbuserName: Username });
+
+        if (existingUser) {
+            console.log(`Username ${Username} is already present`);
+            res.status(404).json({ message: "User exists" });
+        }
+        else {
+
+            const newUser = new User({
+                dbfirstName: FirstName,
+                dblastName: LastName,
+                dbuserName: Username,
+                dbpassword: newP,
+                dbuserRole: Role
+            });
+            await newUser.save();
+            res.status(201).json({ message: "User registered" });
+            // console.log(user.get(Username));
+            console.log("User Registered successfully");
+        }
     }
-    else {
-
-        const newUser = new User({
-            dbfirstName: FirstName,
-            dblastName: LastName,
-            dbuserName: Username,
-            dbpassword: newP,
-            dbuserRole: Role
-        });
-        await newUser.save();
-        res.status(201).json({ message: "User registered" });
-        // console.log(user.get(Username));
-        console.log("User Registered successfully");
+    catch (error) {
+        res.status(500).json({ message: "Input field missing" });
     }
-    // }
-    // catch (error) {
-    //     res.status(500).json({ message: "Input field missing" });
-    // }
 })
 
 route.post('/login', async (req, res) => {
@@ -295,7 +295,7 @@ route.get('/viewCourse', async (req, res) => {
     try {
 
         const result = await Course.find();
-        
+
         if (result) {
             res.status(200)
             res.send(result)

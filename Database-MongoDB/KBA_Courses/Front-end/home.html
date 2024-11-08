@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KBA Home</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        window.onload = async () => {
+            // console.log("hi");
+            try {
+
+                const response = await fetch("http://127.0.0.1:3000/viewUser", {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+
+                const data = await response.json();
+
+                if (data.user == 'admin') {
+
+                    document.getElementById("admin").style.display = 'block';
+
+                }
+            }
+            catch (error) {
+                console.log(error);
+            }
+
+        }
+        async function viewCourse() {
+            const response = await fetch("http://127.0.0.1:3000/viewCourse", {
+                method: 'GET',
+                credentials: 'include',
+            });
+            console.log(response.status);
+
+            const data1 = await response.json();
+            console.log("Quantity in Map:", data1.length);
+
+            if (response.status != 404) {
+                // console.log("Data in Map:", data1);
+                const container = document.getElementById("cards")
+                container.innerHTML = '';
+                data1.forEach(addcourses => {
+                    console.log(addcourses);
+
+                    const coursediv = document.createElement("div");
+                    coursediv.style.border = '2px solid black';
+                    coursediv.style.width = '300px'
+                    coursediv.style.height = '300px'
+                    coursediv.style.padding = '16px'
+                    coursediv.style.margin = '10px'
+
+                    const coursename = document.createElement("h1");
+                    coursename.id = 'name';
+                    coursename.value = addcourses[1].CourseName
+                    coursename.innerHTML = addcourses[1].CourseName;
+                    
+                    const image = document.createElement("img");
+                    image.src = "./Images/Blkchain1.jpeg";
+                    image.style.marginBottom = '10px'
+                    image.style.marginTop = '10px'
+
+                    const description = document.createElement("p");
+                    description.innerHTML = addcourses[1].Description;
+
+                    const more = document.createElement("input");
+                    more.onclick = function(){
+                        handleMore(addcourses[1]);
+                    }
+                    more.type = 'submit';
+                    more.value = 'View More'
+                    more.style.border = '2px solid black';
+                    more.style.marginTop = '10px'
+                    more.style.width = '100px'
+                    
+                    coursediv.appendChild(coursename);
+                    coursediv.appendChild(image);
+                    coursediv.appendChild(description);
+                    coursediv.appendChild(more);
+                    container.appendChild(coursediv);
+                })
+
+            }
+            else {
+                window.location.href = '/notfound.html';
+            }
+        }
+        function handleMore(storeval) {
+
+            console.log(storeval);
+
+            localStorage.setItem('courseid', JSON.stringify(storeval));
+            // console.log(JSON.parse(localStorage.getItem('courseid')));
+            
+            window.location.href = './viewcourse.html'
+
+        }
+    </script>
+
+</head>
+
+<body class="p-0 m-0">
+    <div class="flex justify-between shadow-2xl p-4">
+        <div class="w-9"><img src="./Images/kbalogo.png"></div>
+        <nav>
+            <ul class="flex flex-row">
+                <li class="pr-3"><a href="home.html" class="text-fuchsia-800 hover:font-bold hover:text-lg">Home</a>
+                </li>
+                <li class="pr-3"><a href="courses.html"
+                        class="text-fuchsia-800 hover:font-bold hover:text-lg">Courses</a></li>
+                <li class="pr-3"><a href="contactus.html" class="text-fuchsia-800 hover:font-bold hover:text-lg">Contact
+                        Us</a></li>
+                <li class="pr-3"><a href="addcourses.html" id="admin"
+                        class="text-fuchsia-800 hover:font-bold hover:text-lg" style="display: none;">Add Course</a>
+                </li>
+                <li class="pr-3"><a href="loginpage.html"
+                        class="text-fuchsia-800 hover:font-bold hover:text-lg">Login/Sign Up</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="text-center mt-8 mb-8 mr-2 ml-2 bg-orange-800 text-white font-bold p-8 rounded-md">
+        <h1>Learn Blockchain Technology from India's first Center</h1>
+        <h3>Since 2017</h3>
+    </div>
+    <div class="text-center mt-8 mb-8 mr-2 ml-2  bg-orange-800 text-white font-bold p-8 rounded-md">
+        <h3>BROWSE OUR TOP COURSES</h3>
+        <p>Choose the course that is right for your career goals</p>
+    </div>
+
+
+    <!-- cards -->
+
+    <div id="cards" style="display: flex;"></div>
+
+    <!-- all courses button -->
+    <div class='flex justify-center mb-40'>
+        <button class='w-80 h-10 rounded-full bg-purple-500 text-white font-medium  hover:bg-purple-600'
+            onclick="viewCourse()">View all Courses</button>
+    </div>
+</body>
+
+</html>

@@ -1,10 +1,17 @@
 import express, { json } from 'express';
-
 import { route } from './Routes/adminRoutes_DB.js';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 dotenv.config();
+
 const app = express(); //creating an instance of imported 'express'
+app.use(cors({
+    origin:'http://127.0.0.1:5501',
+    credentials:true,
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(json()) //we call inbuilt functions using express instance(app).use
 app.use('/',route)
 
