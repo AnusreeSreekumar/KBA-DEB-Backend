@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User home Page</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+
+        window.onload = async () => {
+            try {
+
+                const response = await fetch('http://127.0.0.1:8000/viewUser', {
+
+                    method: "GET",
+                    credentials: "include"
+                });
+                const data = await response.json();
+                console.log(data);
+
+                if (data.user == 'Admin') {
+
+                    document.getElementById("admin").style.display = 'block';
+                }
+
+                const bookfetch = await fetch('http://127.0.0.1:8000/viewBooks', {
+
+                    method: "GET",
+                    credentials: "include"
+                });
+                const result = await bookfetch.json();
+                const actualResult = result.result;
+                console.log(actualResult);
+                
+                const count = actualResult.length;
+                console.log("Record count:",count);
+                
+                const maindiv = document.getElementById('maindiv')
+                for(let i = 0; i<count; i++){
+
+                    const sectndiv = document.createElement('div');
+                    sectndiv.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow', 'hover:shadow-lg', 'flex', 'flex-col', 'items-center');
+
+                    const img = document.createElement('img');
+                    // img.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ617acNZwl7P08M1dq2HCbLzDfJxFhQthMxvkKmZlVMmQuFPSQ6ye5G3gX&s=10";
+                    img.alt = `${actualResult[i].dbBookName}`
+
+                    const namtag = document.createElement('a');
+                    namtag.textContent = actualResult[i].dbBookName;
+                    namtag.addEventListener('click', function() {
+                        bookDetails(actualResult[i])
+                    })
+                    namtag.classList.add('text-lg', 'font-semibold', 'hover:underline', 'hover:decoration-2')
+
+                    const author = document.createElement('p');
+                    author.textContent = actualResult[i].dbAuthorName
+                    author.classList.add('text-gray-500')
+
+                    sectndiv.appendChild(img);
+                    sectndiv.appendChild(namtag);
+                    sectndiv.appendChild(author);
+
+                    maindiv.appendChild(sectndiv)
+                }   
+            }
+            catch (error) {
+                console.log(error);
+            }
+
+        }
+
+        function bookDetails(storeval){
+
+            console.log("value to be stored",storeval);
+            localStorage.setItem('bookid', JSON.stringify(storeval))
+            window.location.href = './bookdetails.html'
+        }
+
+
+    </script>
+
+</head>
+
+<body class="bg-gradient-to-r from-blue-100 from-120% via-lime-100 via-30% to-blue-200 to-90% w-screen 
+h-[100vh] overflow-auto">
+
+    <!---Page Heading-->
+    <div>
+        <h1 class="text-5xl tracking-wide text-outline text-center pt-4 text-indigo-500">Welcome to the Library!!!</h1>
+    </div>
+    <!--Main white bg-->
+    <div class="bg-white max-w-[1300px] mx-20 mt-10 flex">
+
+        <!--Left Nav bar-->
+        <div class="w-36 mt-6 hover:cursor-pointer border-r">
+            <nav class="w-28 p-4 bg-white font-serif border-b">
+                <ul class="flex flex-col justify-center ml-4">
+                    <li class="p-1 mb-12 items-center hover:bg-gray-200 w-20 h-8 rounded">
+                        <a href="userhomepg.html">Discover</a>
+                    </li>
+                    <li class="p-1 mb-12  items-center hover:bg-gray-200 w-20 h-8 rounded">
+                        <a href="category.html">Category</a>
+                    </li>
+                    <li class="p-1 mb-12  items-center hover:bg-gray-200 w-24 h-8 rounded">
+                        <a href="mylibrary.html">My Library</a>
+                    </li>
+                    <!-- <li class="p-1 mb-12  items-center hover:bg-gray-200 w-20 h-8 rounded">
+                        <a href="addbook.html">Add Book</a>
+                    </li> -->
+                    <li class="p-1 mb-12  items-center hover:bg-gray-200 w-20 h-8 rounded">
+                        <a href="download.html">Download</a>
+                    </li>
+                    <li class="p-1 mb-12 items-center hover:bg-gray-200 w-24 h-8 rounded">
+                        <a href="audiobooks.html">Audiobooks</a>
+                    </li>
+                    <li class="p-1 mb-12  items-center hover:bg-gray-200 w-20 h-8 rounded" id="admin"
+                        style="display: none;">
+                        <a href="addbook.html">Add Book</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!--second menu options-->
+            <nav class="w-28 p-4 bg-white font-serif mt-6">
+                <ul class="flex flex-col justify-center ml-4">
+                    <li class="p-1 mb-12 items-center hover:bg-gray-200 w-16 h-8 rounded">
+                        <a href="settings.html">Settings</a>
+                    </li>
+                    <li class="p-1 mb-12 items-center hover:bg-gray-200 w-14 h-8 rounded">
+                        <a href="landing.html">Logout</a>
+                    </li>
+                </ul>
+            </nav>
+        </div> <!--Close left nav bar-->
+
+        <!--Main content-->
+        <div class="flex-1">
+
+            <!---Search bar-->
+            <div class="mt-6 flex justify-center items-center">
+                <button
+                    class="w-96 h-11 border bg-gray-200 text-left pl-4 rounded-l-full ml-8 text-slate-500">Search</button>
+                <button
+                    class="h-11 w-16 float-right border-t border-r border-b rounded-r-full bg-gray-100 hover:bg-gray-200"><input
+                        type="image" src="Images/pngwing.com.png" class="w-5 h-6 pt-1"></button>
+            </div> <!--close search bar-->
+
+            <!--Books section-->
+            <!--row 1-->
+            <div class="ml-4">
+                <h2 id="recommcotainer" class="text-xl font-semibold mb-4">Recommended</h2>
+                <div id="maindiv" class="flex flex-row space-x-6">
+                    <!-- <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg flex flex-col items-center">
+                        <img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ617acNZwl7P08M1dq2HCbLzDfJxFhQthMxvkKmZlVMmQuFPSQ6ye5G3gX&s=10">
+                        <a href="#" class="text-lg font-semibold hover:underline hover:decoration-2"></a>
+                        <p class="text-gray-500">Jane Austen</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg flex flex-col items-center">
+                        <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1555750365i/45179431.jpg"
+                            class="w-50 h-40">
+                        <a href="Novel Summary/charanmar.html"
+                            class="text-lg font-semibold hover:underline hover:decoration-2">Daivathinte Charanmar</a>
+                        <p class="text-gray-500">Joseph Annamkutty Jose</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg flex flex-col items-center">
+                        <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1388211242i/69571.jpg"
+                            class="w-50 h-40">
+                        <a href="Novel Summary/charanmar.html"
+                            class="text-lg font-semibold hover:underline hover:decoration-2">Rich Dad Poor Dad</a>
+                        <p class="text-gray-500">Robert Kiyosaki and Sharon Lechter</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg flex flex-col items-center">
+                        <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1579168311i/40197208.jpg"
+                            class="w-50 h-40">
+                        <a href="Novel Summary/charanmar.html"
+                            class="text-lg font-semibold hover:underline hover:decoration-2">Kayar</a>
+                        <p class="text-gray-500">Thakazhi Sivasankara Pillai</p>
+                    </div> -->
+                </div> <!--close of books section-->
+            </div><!--close of row 1-->
+
+            <!--row 2-->
+            <div class="ml-4 mt-6">
+                <h2 class="text-xl font-semibold mb-4">Classics</h2>
+                <div class="flex flex-row space-x-6">
+                    <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg flex flex-col items-center">
+                        <img
+                            src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1260916398i/2757012.jpg">
+                        <a href="Novel Summary/randamoozham.html"
+                            class="text-lg font-semibold hover:underline hover:decoration-2">Randamoozham</a>
+                        <p class="text-gray-500">M.T. Vasudevan Nair</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg flex flex-col items-center">
+                        <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1388212715i/6185.jpg"
+                            class="w-48 h-52">
+                        <a href="Novel Summary/wuthering.html"
+                            class="text-lg font-semibold hover:underline hover:decoration-2">Wuthering Heights</a>
+                        <p class="text-gray-500">Emily Brontë</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg flex flex-col items-center">
+                        <img
+                            src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1315809717i/12516807.jpg">
+                        <a href="Novel Summary/pathummayude.html"
+                            class="text-lg font-semibold hover:underline hover:decoration-2">Pathummayude Aadu</a>
+                        <p class="text-gray-500">Vaikom Muhammad Basheer</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg flex flex-col items-center">
+                        <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1490528560i/4671.jpg"
+                            class="w-50 h-48">
+                        <a href="Novel Summary/greatgatsby.html"
+                            class="text-lg font-semibold hover:underline hover:decoration-2">The Great Gatsby</a>
+                        <p class="text-gray-500">F. Scott Fitzgerald</p>
+                    </div> <!--close of books section-->
+                </div>
+            </div> <!--close row 2-->
+
+            <!--row 3-->
+            <div class="ml-4 mt-6">
+                <h2 class="text-xl font-semibold mb-4">Romance</h2>
+                <div class="flex flex-row space-x-6">
+                    <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg flex flex-col items-center">
+                        <img src="https://dcbookstore.com/uploads/product/images/35833352968875-premalekhanam.jpg"
+                            class="w-50 h-40">
+                        <a href="Novel Summary/premalekhanam.html"
+                            class="text-lg font-semibold hover:underline hover:decoration-2">Premalekhanam</a>
+                        <p class="text-gray-500 text-center">Vaikom Muhammad Basheer</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg flex flex-col items-center">
+                        <img src="https://books.google.co.in/books/content?id=p76ueH9PWJAC&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE71x4VctHtiPqK_4ESSzKhuCq3kx5apy_fyKshNA9RdZDxzBDV7BWTsTG3gLmuy8wqhMIzDv7suJ8UH0fPt-3ZMZagP8Rhlpk_l0-NYso_oS2nNKbu9uFyn0SzYoZMFaQDi8GEQD"
+                            class="w-52 h-40">
+                        <a href="Novel Summary/outlander.html"
+                            class="text-lg font-semibold hover:underline hover:decoration-2">Outlander</a>
+                        <p class="text-gray-500">Diana Gabaldon</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg flex flex-col items-center">
+                        <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1267909591i/5971786.jpg"
+                            class="w-52 h-40">
+                        <a href="#" class="text-lg font-semibold hover:underline hover:decoration-2">Indulekha</a>
+                        <p class="text-gray-500">O. Chandumenon</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg flex flex-col items-center">
+                        <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1483183484i/33648131.jpg"
+                            class="w-52 h-40">
+                        <a href="#" class="text-lg font-semibold hover:underline hover:decoration-2">The Notebook</a>
+                        <p class="text-gray-500">Nicholas Sparks</p>
+                    </div>
+                </div> <!--close of books section-->
+            </div><!--close of row 3-->
+
+            <!--row 4-->
+            <div class="ml-4 mt-6">
+                <h2 class="text-xl font-semibold mb-4">Fiction</h2>
+                <div class="flex flex-row space-x-6">
+                    <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg flex flex-col items-center">
+                        <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1462709894i/2623267.jpg"
+                            class="w-32 he-28">
+                        <a href="Novel Summary/ithihasam.html"
+                            class="text-lg font-semibold hover:underline hover:decoration-2">Khasakkinte Ithihasam</a>
+                        <p class="text-gray-500">O.V. Vijayan</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg flex flex-col items-center">
+                        <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1654371463i/18144590.jpg"
+                            class="w-50 h-40">
+                        <a href="Novel Summary/alchemist.html"
+                            class="text-lg font-semibold hover:underline hover:decoration-2">The Alchemist</a>
+                        <p class="text-gray-500">Paulo Coelho</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg flex flex-col items-center">
+                        <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1695388637i/199087300.jpg"
+                            class="w-50 h-40">
+                        <a href="Novel Summary/wuthering.html"
+                            class="text-lg font-semibold hover:underline hover:decoration-2">ഏറ്റവും പ്രിയപ്പെട്ട
+                            എന്നോട്</a>
+                        <p class="text-gray-500">Nimna Vijay</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg flex flex-col items-center">
+                        <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1578028274i/38447._SY180_.jpg"
+                            class="w-50 h-48">
+                        <a href="Novel Summary/greatgatsby.html"
+                            class="text-lg font-semibold hover:underline hover:decoration-2">The Handmaid’s Tale</a>
+                        <p class="text-gray-500">Margaret Atwood</p>
+                    </div> <!--close of books section-->
+                </div>
+            </div> <!--close row 4-->
+
+        </div> <!--Close main body-->
+</body>
+
+</html>

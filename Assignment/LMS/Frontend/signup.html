@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+
+    <script>
+
+        async function signup(event) {
+
+            try {
+                // console.log("hi");
+
+                event.preventDefault();
+
+                const name = document.getElementById('nametxt').value;
+                const username = document.getElementById('usrnmtxt').value;
+                const email = document.getElementById('emailtxt').value;
+                const password = document.getElementById('pswrdtxt').value;
+                const genre = getGenreValue();
+                const language = getLangValue();
+                console.log("name: ", name + " email: ", email + " genre: ", genre);
+
+                const response = await fetch('http://127.0.0.1:8000/signup', {
+
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        Name: name,
+                        Username: username,
+                        Email: email,
+                        Password: password,
+                        Genre: genre,
+                        Language: language
+                    })
+                })
+
+                if (response.status == 201) {
+                    console.log(response);
+                    window.location.href = "./login.html"
+                }
+                else{
+                    console.log(error);
+                }
+
+            }
+            catch (error) {
+                console.log(error);
+            }
+        }
+
+        function getGenreValue() {
+
+            const chkboxId = ['romancetxt', 'classicstxt', 'horrortxt', 'fictiontxt', 'fantasytxt', 'mysterytxt']
+
+            const checkedValues = [];
+
+            for (let id of chkboxId) {
+
+                const selectedChkBox = document.getElementById(id);
+                if (selectedChkBox && selectedChkBox.checked) {
+                    checkedValues.push(selectedChkBox.name)
+                }
+            }
+            return checkedValues;
+        }
+
+        function getLangValue() {
+
+            const chkboxId = ['englishtxt', 'malayalamtxt']
+
+            const checkedValues = [];
+
+            for (let id of chkboxId) {
+
+                const selectedChkBox = document.getElementById(id);
+                if (selectedChkBox && selectedChkBox.checked) {
+                    checkedValues.push(selectedChkBox.name)
+                }
+            }
+            return checkedValues;
+        }
+    </script>
+</head>
+
+<body class="bg-[url('Images/signup.jpg')] bg-cover bg-no-repeat">
+
+    <form class="flex justify-center mt-12" onsubmit="signup(event)">
+        <div class="bg-black w-96 overflow-y-hidden p-10 flex flex-col items-center rounded-md opacity-65">
+            <h2 class="text-white text-base">Sign Up</h2>
+            <div class="my-4">
+                <input id="nametxt" class="p-1" type="text" placeholder="Name" required>
+            </div>
+            <div class="my-4">
+                <input id="usrnmtxt" class="p-1" type="text" placeholder="Username" required>
+            </div>
+            <div class="my-4">
+                <input id="emailtxt" class="p-1" type="text" placeholder="Email" required>
+            </div>
+            <div class="my-4">
+                <input id="pswrdtxt" class="p-1" type="password" placeholder="Password" required>
+            </div>
+            <div class="my-2">
+                <label for="content" class="text-white text-xl font-semibold">Genre</label>
+                <div class="my-2 grid grid-cols-4">
+                    <input type="checkbox" name="romance" id="romancetxt" class="w-10 h-4">
+                    <label for="romancetxt" class="text-white">Romance</label>
+                    <input type="checkbox" name="classics" id="classicstxt" class="w-10 h-4">
+                    <label for="classicstxt" class="text-white">Classics</label>
+                    <input type="checkbox" name="horror" id="horrortxt" class="w-10 h-4">
+                    <label for="horrortxt" class="text-white">Horror</label>
+                    <input type="checkbox" name="fiction" id="fictiontxt" class="w-10 h-4">
+                    <label for="fictiontxt" class="text-white">Fictions</label>
+                    <input type="checkbox" name="fantasy" id="fantasytxt" class="w-10 h-4">
+                    <label for="fantasytxt" class="text-white">Fantasy</label>
+                    <input type="checkbox" name="mystery" id="mysterytxt" class="w-10 h-4">
+                    <label for="mysterytxt" class="text-white">Mystery</label>
+                </div>
+            </div>
+
+            <div class="my-2">
+                <label for="content" class="text-white text-xl font-semibold">Language</label>
+                <div class="my-2 grid grid-cols-4">
+                    <input type="checkbox" name="english" id="englishtxt" class="w-10 h-4">
+                    <label for="englishtxt" class="text-white">English</label>
+                    <input type="checkbox" name="malayalam" id="malayalamtxt" class="w-10 h-4">
+                    <label for="malayalamtxt" class="text-white">Malayalam</label>
+                </div>
+            </div>
+
+            <button class="w-20 h-6 bg-blue-200 rounded-md my-2">Sign Up</button>
+            <div class="flex mt-4">
+                <p class="text-white">Already a User &nbsp;&nbsp;</p>
+                <button class="w-16 h-6 bg-blue-200 rounded-md">Sign In</button>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Book</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+
+        window.onload = async () => {
+            try {
+
+                const response = await fetch('http://127.0.0.1:8000/getBook?BookName=Pride and Prejudice', {
+
+                    method: "GET",
+                    credentials: "include"
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                else {
+                    const bookvalues = await response.json();
+                    console.log(bookvalues);
+                    const bookname = document.getElementById('bookId')
+                    const authorname = document.getElementById('authortxt')
+                    const description = document.getElementById('descrptntxt')
+                    const genre = document.getElementById('genretxt')
+                    const language = document.getElementById('langtxt')
+
+                    bookname.value = bookvalues.dbBookName;
+                    // bookname.classList.add('text-black')
+                    authorname.value = bookvalues.dbAuthorName;
+                    description.value = bookvalues.dbDescription;
+                    genre.value = bookvalues.dbGenre
+                    language.value = bookvalues.dbLanguage
+                }
+            }
+            catch (error) {
+                console.log(error);
+            }
+        }
+        async function updateBook(event) {
+            try{
+
+                event.preventDefault();
+
+                const bookname = document.getElementById('bookId').value;
+                const authorname = document.getElementById('authortxt').value;
+                const description = document.getElementById('descrptntxt').value;
+                const genre = document.getElementById('genretxt').value;
+                const language = document.getElementById('langtxt').value;
+
+                console.log("description: ", description);
+
+                const response = await fetch('http://127.0.0.1:8000/updateBook', {
+
+                    method : "PATCH",
+                    credentials : "include",
+                    headers : {
+                        'Content-Type' : 'application/json'
+                    },
+                    body : JSON.stringify({
+                        BookName : bookname,
+                        Author : authorname,
+                        Description : description,
+                        Genre : genre,
+                        Language : language
+                    })
+                })
+                console.log("DB updated entry: ",response);
+                if(response.ok){
+
+                    console.log(response.json);
+                    window.location.href = './userhomepg.html'
+                }
+                else{
+                    console.log(error);
+                }
+            }
+            catch(error){
+                console.log(error);
+            }
+        }
+
+    </script>
+</head>
+
+<body class="bg-[url('Images/signup.jpg')] bg-cover bg-no-repeat">
+
+    <form class="flex justify-center mt-16">
+        <div class="bg-black w-96 overflow-y-hidden p-10 flex flex-col items-center rounded-md opacity-95">
+            <h2 class="text-white font-semibold">Update the details of a Book</h2>
+            <div class="my-6">
+                <input id="bookId" class="p-1" type="text" required>
+            </div>
+            <div class="my-6">
+                <input id="authortxt" class="p-1" type="text" required>
+            </div>
+            <div class="my-6">
+                <textarea id="descrptntxt" name="description" class="p-1 w-64 text-black"
+                    required></textarea>
+                <!-- <input type="text" placeholder="" required> -->
+            </div>
+            <div class="my-6">
+                <input id="genretxt" class="p-1" type="text" required>
+            </div>
+            <div class="my-6">
+                <input id="langtxt" class="p-1" type="text" required>
+            </div>
+            <!-- <div class="flex my-6 ml-32 space-x-4">
+                <label for="genre" class="text-white">Coverpage*: </label>
+                <input type="file">
+            </div> -->
+            <button class="w-28 h-6 bg-blue-200 rounded-md">
+                <a onclick="updateBook(event)">Update book</a>
+            </button>
+            <!-- <input type="submit" value="" class="text-white"> -->
+        </div>
+    </form>
+</body>
+
+</html>
