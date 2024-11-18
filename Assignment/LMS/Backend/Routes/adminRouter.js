@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import dotenv from 'dotenv'
 import { authenticate } from "../Middleware/auth.js";
+import { User } from "../Models/User";
+import { Books } from "../Models/Book.js";
 // import multer from 'multer';
 // impo GridFsStorage } from 'multer-gridfs-storage';
 // import { GridFSBucket } from "mongodb";rt {
@@ -12,27 +14,6 @@ dotenv.config();
 const adminRouter = Router();
 const SecretKey = process.env.secretKey;
 const mongoURI = process.env.mongohost;
-
-const userSchema = new mongoose.Schema({
-    dbName: { type: String, required: true },
-    dbUsername: { type: String, required: true },
-    dbEmail: { type: String, required: true, unique: true },
-    dbPassword: { type: String, required: true },
-    dbGenre: { type: [String], required: true },
-    dbLanguage: { type: [String], required: true },
-    dbRole: { type: String, required: true }
-});
-
-const bookSchema = new mongoose.Schema({
-    dbBookName: { type: String, required: true, unique: true },
-    dbAuthorName: { type: String, required: true },
-    dbDescription: { type: String, required: true },
-    dbGenre: { type: String, required: true },
-    dbLanguage: { type: String, required: true }
-});
-
-const User = mongoose.model('Userdetails', userSchema)
-const Book = mongoose.model('Bookdetails', bookSchema);
 
 mongoose.connect(mongoURI)
 mongoose.connection.on('connected', () => {
@@ -147,14 +128,19 @@ adminRouter.post('/addbook', authenticate, async (req, res) => {
                 Description,
                 Genre,
                 Language,
+                CoverImage
             } = req.body;
 
-            const newBook = new Book({
+            console.log(CoverImage);
+            
+
+            const newBook = new Books({
                 dbBookName: BookName,
                 dbAuthorName: Author,
                 dbDescription: Description,
                 dbGenre: Genre,
-                dbLanguage: Language
+                dbLanguage: Language,
+                dbCoverImage:CoverImage
             });
             await newBook.save();
             res.status(201).json({ message: "New Book added entry created" })
@@ -189,7 +175,7 @@ adminRouter.get('/getBook', async (req, res) => {
         const searchItem = req.query.BookName;
         console.log(searchItem);
 
-        const existingBook = await Book.findOne({ dbBookName: searchItem })
+        const existingBook = await Books.findOne({ dbBookName: searchItem })
         console.log(existingBook);
 
         if (existingBook) {
@@ -212,7 +198,7 @@ adminRouter.get('/viewBooks', async (req, res) => {
 
     try {
 
-        const result = await Book.find();
+        const result = await Books.find();
         if (result) {
 
             res.status(200).json({ result });
@@ -247,10 +233,10 @@ adminRouter.patch('/updateBook', authenticate, async (req, res) => {
 
             console.log("Input data: ",data);
 
-            const book = await Book.findOne({ dbBookName: BookName });
+            const book = await Books.findOne({ dbBookName: BookName });
             console.log("DB data: ",book);
             
-            const dbdata = await Book.updateOne({ dbBookName: BookName },
+            const dbdata = await Books.updateOne({ dbBookName: BookName },
                 {
                     $set: {
 
@@ -290,7 +276,7 @@ adminRouter.delete('/deleteBook/:bookName', authenticate, async (req, res) => {
         if(loginRole == 'Admin'){
 
             const BookName = req.params.bookName;
-            const existingBook = await Book.findOne({dbBookName : BookName});
+            const existingBook = await Books.findOne({dbBookName : BookName});
             console.log("Existing: ", existingBook);
             
             if(existingBook){

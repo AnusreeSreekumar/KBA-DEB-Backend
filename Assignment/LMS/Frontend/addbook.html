@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Book</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <script>
 
         async function addBook(event) {
-            try{
+            try {
 
                 event.preventDefault();
 
@@ -19,45 +20,78 @@
                 const description = document.getElementById('descrptntxt').value;
                 const genre = document.getElementById('genretxt').value;
                 const language = document.getElementById('langtxt').value;
+                const coverimage = document.getElementById('coverImage')
 
-                console.log("Bookname: ", bookname + "Language: ", language);
+                // if (coverimage) {
 
-                const response = await fetch('http://127.0.0.1:8000/addbook', {
+                //     coverimage.addEventListener('change', function (event) {
 
-                    method : "POST",
-                    credentials : "include",
-                    headers : {
-                        'Content-Type' : 'application/json'
-                    },
-                    body : JSON.stringify({
-                        BookName : bookname,
-                        Author : authorname,
-                        Description : description,
-                        Genre : genre,
-                        Language : language
-                    })
-                })
-                console.log(response);
-                if(response.ok){
+                //         const file = event.target.files[0];
 
-                    console.log(response.json);   
-                    window.location.href = './userhomepg.html'
-                }
-                else{
-                    console.log(error);
-                }
+                //         if (file) {
+                //             const reader = new FileReader();
+                //             console.log("Reader", reader);
+
+                //             reader.onloadend = function () {
+                //                 const base64Image = reader.result;  // This is the Base64 encoded string
+                //                 console.log('Base64 Image:', base64Image);
+
+                //                 // You can now send this base64Image to your backend
+                //                 // For example, you can send it via an API request or attach it to a form
+                //             };
+
+                //             reader.readAsDataURL(file);  // Converts the image file to Base64
+                //         }
+                //         else {
+                //             console.log("No file selected.");
+                //         }
+                //     });
+                // }
+                // else{
+                //     console.log("File input element not found.");
+                // }
+
+                console.log("Bookname: ", bookname + " language: ", coverimage);
+
+                // const response = await fetch('http://127.0.0.1:8000/addbook', {
+
+                //     method: "POST",
+                //     credentials: "include",
+                //     headers: {
+                //         'Content-Type': 'application/json'
+                //     },
+                //     body: JSON.stringify({
+                //         BookName: bookname,
+                //         Author: authorname,
+                //         Description: description,
+                //         Genre: genre,
+                //         Language: language,
+                //         CoverImage: coverimage
+                //     })
+                // })
+                // console.log(response);
+                // if (response.ok) {
+
+                //     console.log(response.json);
+                //     window.location.href = './userhomepg.html'
+                // }
+                // else {
+                //     console.log(error);
+                // }
             }
-            catch(error){
+            catch (error) {
                 console.log(error);
-            }   
+            }
         }
 
     </script>
 </head>
+
 <body class="bg-[url('Images/signup.jpg')] bg-cover bg-no-repeat">
 
-    <form class="flex justify-center mt-16" onclick="addBook(event)">
-        <div class="bg-black w-96 overflow-y-hidden p-10 flex flex-col items-center rounded-md opacity-65">
+    <form action="/upload" method="post" enctype="multipart/form-data" class="flex justify-center mt-16">
+        <div
+            class="bg-black w-96 overflow-y-hidden p-10 flex flex-col items-center rounded-md opacity-65 overflow-hidden">
             <h2 class="text-white font-semibold">Add a book to the library</h2>
             <div class="my-6">
                 <input id="bookId" class="p-1" type="text" placeholder="Book Name" required>
@@ -66,7 +100,8 @@
                 <input id="authortxt" class="p-1" type="text" placeholder="Author Name" required>
             </div>
             <div class="my-6">
-                <textarea id="descrptntxt" name="description" class="p-1 w-64 text-gray-500" required>Description</textarea>
+                <textarea id="descrptntxt" name="description" class="p-1 w-64 text-gray-500"
+                    required>Description</textarea>
                 <!-- <input type="text" placeholder="" required> -->
             </div>
             <div class="my-6">
@@ -75,15 +110,16 @@
             <div class="my-6">
                 <input id="langtxt" class="p-1" type="text" placeholder="Language" required>
             </div>
-            <!-- <div class="flex my-6 ml-32 space-x-4">
-                <label for="genre" class="text-white">Coverpage*: </label>
-                <input type="file">
-            </div> -->
-            <button class="w-28 h-6 bg-blue-200 rounded-md">
-                <a href="login.html">Add book</a>
+            <div class="flex my-6 ml-32 space-x-4">
+                <label for="coverImage" class="text-white">Coverpage*: </label>
+                <input type="file" id="coverImage">
+            </div>
+            <button class="w-28 h-6 bg-blue-200 rounded-md" onclick="addBook(event)">
+                Add book
             </button>
             <!-- <input type="submit" value="" class="text-white"> -->
         </div>
-    </form>  
+    </form>
 </body>
+
 </html>
