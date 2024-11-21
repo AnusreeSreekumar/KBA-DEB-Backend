@@ -53,31 +53,31 @@
 
                 console.log("Bookname: ", bookname + " language: ", coverimage);
 
-                // const response = await fetch('http://127.0.0.1:8000/addbook', {
+                const response = await fetch('http://127.0.0.1:8000/addbook', {
 
-                //     method: "POST",
-                //     credentials: "include",
-                //     headers: {
-                //         'Content-Type': 'application/json'
-                //     },
-                //     body: JSON.stringify({
-                //         BookName: bookname,
-                //         Author: authorname,
-                //         Description: description,
-                //         Genre: genre,
-                //         Language: language,
-                //         CoverImage: coverimage
-                //     })
-                // })
-                // console.log(response);
-                // if (response.ok) {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        BookName: bookname,
+                        Author: authorname,
+                        Description: description,
+                        Genre: genre,
+                        Language: language,
+                        // CoverImage: coverimage
+                    })
+                })
+                console.log(response);
+                if (response.ok) {
 
-                //     console.log(response.json);
-                //     window.location.href = './userhomepg.html'
-                // }
-                // else {
-                //     console.log(error);
-                // }
+                    console.log(response.json);
+                    window.location.href = './userhomepg.html'
+                }
+                else {
+                    console.log(error);
+                }
             }
             catch (error) {
                 console.log(error);
@@ -110,10 +110,10 @@
             <div class="my-6">
                 <input id="langtxt" class="p-1" type="text" placeholder="Language" required>
             </div>
-            <div class="flex my-6 ml-32 space-x-4">
+            <!-- <div class="flex my-6 ml-32 space-x-4">
                 <label for="coverImage" class="text-white">Coverpage*: </label>
                 <input type="file" id="coverImage">
-            </div>
+            </div> -->
             <button class="w-28 h-6 bg-blue-200 rounded-md" onclick="addBook(event)">
                 Add book
             </button>

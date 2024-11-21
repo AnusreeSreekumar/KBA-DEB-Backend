@@ -6,7 +6,6 @@ const bookSchema = new mongoose.Schema({
     dbDescription: { type: String, required: true },
     dbGenre: { type: String, required: true },
     dbLanguage: { type: String, required: true },
-    dbCoverImage: { type: String, required: true }
 });
 
 const Books = mongoose.model('Bookdetails', bookSchema);

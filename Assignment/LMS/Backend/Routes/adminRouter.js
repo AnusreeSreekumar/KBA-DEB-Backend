@@ -128,10 +128,9 @@ adminRouter.post('/addbook', authenticate, async (req, res) => {
                 Description,
                 Genre,
                 Language,
-                CoverImage
             } = req.body;
 
-            console.log(CoverImage);
+            // console.log(CoverImage);
             
 
             const newBook = new Books({
@@ -140,7 +139,6 @@ adminRouter.post('/addbook', authenticate, async (req, res) => {
                 dbDescription: Description,
                 dbGenre: Genre,
                 dbLanguage: Language,
-                dbCoverImage:CoverImage
             });
             await newBook.save();
             res.status(201).json({ message: "New Book added entry created" })
@@ -281,7 +279,7 @@ adminRouter.delete('/deleteBook/:bookName', authenticate, async (req, res) => {
             
             if(existingBook){
 
-                await Book.deleteOne({dbBookName : BookName})
+                await Books.deleteOne({dbBookName : BookName})
                 res.status(200).json({ message: "   Book Entry Deleted" });
                 console.log("Course Deleted");
             }
