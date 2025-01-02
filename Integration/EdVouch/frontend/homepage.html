@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>home page</title>
+
+    <script>
+
+     async function handleSearch(event){
+     
+    event.preventDefault();
+
+    let cno =document.getElementById("cno").value
+    console.log(cno);
+     
+   const response = await fetch(`http://127.0.0.1:4000/getCertificate/${cno}`,{
+    method:"GET",
+    credentials:"include"
+   })
+ 
+   console.log(response);
+   const data= await response.json();
+   console.log(data);
+   if(response.status == 200){
+    window.location.href="./viewcertificate.html"
+    console.log(data.course.CertificateId);
+    searchData=data.course.CertificateId
+    
+    localStorage.setItem("searchCourse",searchData);
+   }
+   
+   
+        }
+
+
+    </script>
+</head>
+<body class="bg-slate-300	">
+
+<nav class="flex justify-end p-3 text-white">
+    <div>
+        <a href="" class="mx-4 bg-blue-600 px-3 py-2">Home</a>
+        <a href="formpage.html" class="mx-4 text-black">Issue Certificate</a>
+    </div>
+</nav>
+
+
+    <div class="flex justify-center ">
+        <div class="flex items-center flex-col justify-center">
+            <form  onsubmit="handleSearch(event)">
+                <h1 class="text-4xl font-bold text-center">Cerficy App</h1>
+                <div class="my-5">
+                    <img src="online-course.png" alt="" class="size-72">
+                </div>
+                <div>
+                    <input type="text" id="cno" class="outline-none border-2 border-sky-600"  placeholder="Enter Certificate Id To View">
+                    <button class="bg-sky-500 px-3 py-1 text-white" >search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</body>
+</html>

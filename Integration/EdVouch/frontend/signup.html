@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>signup</title>
+
+<script>
+ 
+ async function handleSignup(event){
+
+    event.preventDefault();
+    let uname= document.getElementById("Username").value;
+    let uemail= document.getElementById("Email").value;
+    let pwd= document.getElementById("Password").value;
+    let utype= document.getElementById("userType").value;
+
+
+    console.log(uname,uemail,pwd,utype);
+    
+
+    const response = await fetch("http://127.0.0.1:4000/signup",{
+
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+              
+
+      username:uname,
+      email:uemail,
+      password:pwd,
+      role:utype
+
+        })
+    });
+
+    console.log(response);
+    const data= await response.json();
+    console.log(data);
+    
+    if(response.status == 201){
+        alert(data.message)
+        window.location.href="./login.html"
+    }else if(response.status == 400){
+        alert(data.message)
+
+    }
+    
+ }
+    
+</script>
+
+
+
+</head>
+<body>
+<div class="flex  justify-center">
+    <form class="bg-sky-500 w-80 p-8  mt-24" onsubmit="handleSignup(event)">
+        <h1 class="font-bold text-white text-2xl text-center" >SIGN UP</h1>
+        <label>Username:</label>
+        <div class="my-2  ">
+         <input type="text" placeholder="enter username" id="Username" class="w-full rounded-sm h-8" required>
+        </div>
+        <label>Email:</label>
+        <div class="my-2  ">
+         <input type="text" placeholder="enter email" id="Email" class="w-full rounded-sm h-8" required>
+        </div>
+        <label>Password:</label>
+         <div class="my-2">
+            <input type="text" placeholder="password" id="Password" class="w-full rounded-sm h-8" required>
+        </div>
+         <div>
+            <select name="" id="userType" required>
+                <option value="select" selected>Select</option>
+                <option value="user">user</option>
+                <option value="admin">admin</option>
+            </select>
+         </div>
+        <div>
+            <ul class="flex justify-around">
+                <li>Already Have an account?</li>
+                <li><a href="./login.html">Login</a></li>
+            </ul>
+        </div>
+         
+       <div class="text-center mt-3">
+        <button class="bg-black text-white px-3 py-1">Login</button>
+       </div>
+
+       </form>
+    
+</div>
+   
+</body>
+</html>
